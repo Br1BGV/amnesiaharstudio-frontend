@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
 const EstadoPago = ({ esperado, mensajeOk, mensajeDefault }) => {
-  const { reservaId } = useParams();
+  const [searchParams] = useSearchParams();
+  const reservaId = searchParams.get("external_reference");
   const token = localStorage.getItem("token");
 
   const [estado, setEstado] = useState("Verificando estado del pago...");
 
   useEffect(() => {
+    if (!reservaId) {
+      setEstado("No se pudo identificar la reserva");
+      return;
+    }
+
     const interval = setInterval(async () => {
-      const response = await fetch(
-        `${API}/api/reservas/${reservaId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+      const response = await fetch(`${API}/api/reservas/${reservaId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      });
 
       if (!response.ok) return;
 
@@ -36,7 +39,7 @@ const EstadoPago = ({ esperado, mensajeOk, mensajeDefault }) => {
   }, [reservaId, token, esperado, mensajeOk, mensajeDefault]);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "60px" }}>
+    <div style={{ textAlign: "center", marginTop: "80px", minHeight: "300px" }}>
       <h2>{estado}</h2>
     </div>
   );
