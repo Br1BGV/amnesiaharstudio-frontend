@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL;
 
-const EstadoPago = ({ esperado, mensajeOk, mensajeDefault }) => {
+const EstadoPago = ({ estadoEsperadoId, mensajeOk, mensajeDefault }) => {
   const [searchParams] = useSearchParams();
   const reservaId = searchParams.get("external_reference");
   const token = localStorage.getItem("token");
@@ -27,7 +27,7 @@ const EstadoPago = ({ esperado, mensajeOk, mensajeDefault }) => {
 
       const reserva = await response.json();
 
-      if (reserva.estado === esperado) {
+      if (reserva.estadoReservaId === estadoEsperadoId) {
         setEstado(mensajeOk);
         clearInterval(interval);
       } else {
@@ -36,7 +36,7 @@ const EstadoPago = ({ esperado, mensajeOk, mensajeDefault }) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [reservaId, token, esperado, mensajeOk, mensajeDefault]);
+  }, [reservaId, token, estadoEsperadoId, mensajeOk, mensajeDefault]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "80px", minHeight: "300px" }}>
