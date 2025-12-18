@@ -1,0 +1,590 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: black;
+}
+
+/*Header*/
+.navbar {
+  transition: background-color 0.4s ease, box-shadow 0.3s ease;
+  padding: 0;
+}
+
+.navbar-transparent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-link {
+  color: white;
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show,
+.navbar-nav .nav-link:focus {
+  color: rgb(69, 209, 34);
+}
+
+.nav-link:hover {
+  color: rgb(69, 209, 34);
+}
+
+.nav-item {
+  padding: 10px;
+}
+
+.profile-menu {
+  min-width: 180px;
+}
+
+/*Header con menú desplegable*/
+@media (max-width: 991px) {
+  .profile-menu {
+    top: auto;
+    bottom: 60px;
+    transform: translateX(37%);
+  }
+
+  .navbar-collapse.show {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    padding-bottom: 2rem;
+  }
+
+  .navbar-collapse.show .nav-item {
+    margin: 0.5rem 0;
+  }
+
+  .navbar-collapse.show .d-flex {
+    justify-content: center;
+    padding-top: 1rem;
+  }
+}
+
+.navbar-toggler {
+  border-color: rgb(88, 85, 85);
+}
+
+.btn-outline-dark {
+  color: white;
+  border-color: white;
+}
+
+.btn-outline-dark:hover {
+  background-color: white;
+  color: black;
+}
+
+/*Hero*/
+.hero {
+  background-image: url("../img/AmnesiaHairStudioPortadaF.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  padding-top: 25rem;
+}
+
+@media (max-width: 991px) {
+  .hero {
+    background-image: url("../img/PortadaMovil.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    padding-top: 25rem;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero .btn {
+  font-weight: bold;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.2rem;
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.hero .btn:hover {
+  background-color: white;
+  color: black;
+  transform: scale(1.05);
+}
+
+/*Footer*/
+.footer {
+  background-color: black;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+.row p {
+  color: white;
+}
+
+.footer-title {
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  color: white;
+  text-decoration: none;
+  display: inline;
+  margin: 0.3rem 0;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: rgb(69, 209, 34);
+}
+
+.social-link {
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-link:hover {
+  color: rgb(69, 209, 34);
+  transform: scale(1.2);
+}
+
+/*Login*/
+.login {
+  background-color: #0f0f0f;
+  min-height: 100vh;
+  color: white;
+}
+
+.login-form {
+  background-color: #0f0f0f;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.login-form input {
+  color: white;
+  text-align: start;
+  border-radius: 5px;
+  border: 1px solid #222;
+}
+
+.login-btn {
+  background-color: #43d32c;
+  border: none;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #37aa26;
+  transform: scale(1.03);
+}
+
+.reset-link {
+  color: #ffffff;
+}
+
+.reset-link:hover {
+  color: #58f340;
+  text-decoration: underline;
+}
+
+.error-text {
+  margin-top: 1rem;
+}
+
+/*Register*/
+.register {
+  background-color: #0f0f0f;
+  min-height: 100vh;
+  color: white;
+}
+
+@media (min-width: 767px) {
+  .register-form,
+  .login-form {
+    background-color: #0f0f0f;
+    border: 1px solid #222;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+}
+
+.register-form {
+  background-color: #0f0f0f;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.register-form input {
+  color: white;
+  text-align: start;
+  border-radius: 5px;
+  border: 1px solid #222;
+}
+
+.register-btn {
+  background-color: #43d32c;
+  border: none;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #37aa26;
+  transform: scale(1.03);
+}
+
+/*Home*/
+.home-card {
+  background-color: #141414;
+  border: 1px solid #222;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cuponera-card {
+  background-color: transparent;
+  border: 1px solid white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-card:hover,
+.cuponera-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 255, 0, 0.15);
+}
+
+.home-icon {
+  font-size: 2rem;
+  color: #43d32c;
+}
+
+.phone-icon {
+  transform: rotate(90deg);
+}
+
+/*AboutUs*/
+.aboutUs {
+  color: white;
+  background-color: #000000;
+}
+
+.aboutUs-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.aboutUs h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.aboutUs p {
+  color: #cfcfcf;
+  line-height: 1.7;
+}
+
+.aboutUs-img {
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+/*Services*/
+.services {
+  color: white;
+  background-color: #0f0f0f;
+}
+
+.services-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.services h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.services p {
+  color: #cfcfcf;
+  line-height: 1.7;
+}
+
+.service-card {
+  background-color: #141414;
+  border: 1px solid #222;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 255, 0, 0.15);
+}
+
+.btn-services {
+  background-color: white;
+}
+
+.btn-services:hover {
+  background-color: black;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .col-md-3 {
+    margin-top: 1rem;
+  }
+  .col-md-4 {
+    margin-top: 1rem;
+  }
+  .col-md-5 {
+    margin-top: 1rem;
+  }
+  .col-md-6 {
+    margin-top: 1rem;
+  }
+}
+
+.price-service {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+/*Reserve*/
+.reserve {
+  color: white;
+  background-color: #000000;
+}
+
+.reserve-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.reserve-page h3,
+h5 {
+  color: #43d32c;
+}
+
+.reserve h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.reserve p {
+  color: #cfcfcf;
+  line-height: 1.7;
+}
+
+.reserve-form input,
+select {
+  width: 100%;
+  background-color: #0f0f0f;
+  border: 1px solid #222;
+  color: white;
+}
+
+.circle-number {
+  margin: 0 auto 1rem auto;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #43d32c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #43d32c;
+  font-weight: bold;
+  background-color: rgba(70, 201, 23, 0.05);
+  font-size: 1.2rem;
+}
+
+/*Courses*/
+.courses {
+  color: white;
+  background-color: #0f0f0f;
+}
+
+.courses-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.courses h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.course-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+/*Gallery*/
+.gallery {
+  color: white;
+  background-color: #000000;
+}
+
+.gallery-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.gallery h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*Contact*/
+.contact {
+  color: white;
+  background-color: #0f0f0f;
+}
+
+.contact-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+}
+
+.contact h2 {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.contact-form h3 {
+  color: #43d32c;
+}
+
+.contact-form,
+.reserve-form {
+  background-color: #141414;
+  text-align: center;
+  border: 1px solid #222;
+}
+
+.input-contact {
+  background-color: #141414;
+  border: 1px solid #222;
+  color: white;
+}
+
+/*Reservations*/
+.reservations-page {
+  color: white;
+  background: linear-gradient(to bottom, #111 0%, #000 100%);
+  min-height: 100vh;
+}
+
+.reservations-page h2 {
+  margin-top: 2rem;
+}
+
+.reservations-card{
+  background-color: #141414;
+  border: 1px solid #18611e;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reservations-card:hover{
+  border: 1px solid #08ff1c;
+}
+
+.reservation-icon{
+  color: #20940e;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.reservations-page label{
+  font-size: 1.2rem;
+}
+
+.reservations-page div{
+  font-size: 1.1rem;
+}
+
+
+/*Profile Button*/
+.btn-profile {
+  border: 0px;
+}
+
+.reserve-state {
+  background: #1faa59;
+  color: #0b0b0b;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/*Profile*/
+.profile {
+  background-color: #0f0f0f;
+  min-height: 100vh;
+  color: white;
+  padding-top: 5rem;
+}
+
+.profile h2 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.profile-form {
+  background-color: #0f0f0f;
+  border-color: 1px solid #222;
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+}
+
+.register-form input {
+  color: white;
+  text-align: start;
+  border-radius: 5px;
+}
+
+.profile-edit-btn {
+  width: 50%;
+}
+
+.page-icon {
+  width: 70px;
+  height: 70px;
+}
