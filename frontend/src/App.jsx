@@ -34,9 +34,9 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/services" element={<Services />} />
         <Route path="/reserve" element={<Reservation />} />
-        <Route path="/pago-exitoso/:reservaId" element={<PagoExitoso/>} />
-        <Route path="/pago-pendiente/:reservaId" element={<PagoPendiente />} />
-        <Route path="/pago-error/:reservaId" element={<PagoError />} />
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
+        <Route path="/pago-pendiente" element={<PagoPendiente />} />
+        <Route path="/pago-error" element={<PagoError />} />
       </Routes>
 
       <Footer />
