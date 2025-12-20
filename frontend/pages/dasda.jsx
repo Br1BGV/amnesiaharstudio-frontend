@@ -18,7 +18,7 @@ const Reservation = () => {
   const clienteId = isLogged ? user.id : null;
 
   const [step, setStep] = useState(1);
-const [mostrarResumen, setMostrarResumen] = useState(false);
+
   const [servicios, setServicios] = useState([]);
   const [barberos, setBarberos] = useState([]);
   const [diasDisponibles, setDiasDisponibles] = useState([]);
@@ -94,11 +94,6 @@ const [mostrarResumen, setMostrarResumen] = useState(false);
       alert("Error creando reserva");
     }
   };
-  useEffect(() => {
-  if (step === 4 && reservaFinal && !preferenceId) {
-    pagarReserva();
-  }
-}, [step, reservaFinal]);
   const pagarReserva = async () => {
     if (!reservaFinal) return;
 
@@ -350,78 +345,61 @@ const [mostrarResumen, setMostrarResumen] = useState(false);
         )}
 
         {/* ================= PASO 4 ================= */}
-        {/* ================= PASO 4 ================= */}
-      {step === 4 && reservaFinal && (
-  <div className="confirm-box">
-    <div className="confirm-icon">✔️</div>
-    <h3 className="confirm-title">Reserva creada correctamente</h3>
-    <p>¿Cómo querés pagar?</p>
+        {step === 4 && reservaFinal && (
+          <div className="confirm-box">
+            <div className="confirm-icon">✔️</div>
+            <h3 className="confirm-title">¡Reserva confirmada!</h3>
 
-    {/* WALLET APARECE DIRECTO */}
-    {preferenceId && (
-      <div style={{ marginTop: "20px", width: "300px" }}>
-        <Wallet initialization={{ preferenceId }} />
-      </div>
-    )}
+            <div className="confirm-data">
+              <p>
+                <strong>Cliente:</strong> {form.nombre}
+              </p>
+              <p>
+                <strong>Servicio:</strong> {reservaFinal.nombreServicio}
+              </p>
+              <p>
+                <strong>Barbero:</strong> {reservaFinal.nombreBarbero}
+              </p>
+              <p>
+                <strong>Fecha:</strong> {reservaFinal.fecha.split("T")[0]}
+              </p>
+              <p>
+                <strong>Hora:</strong> {reservaFinal.horaInicio}
+              </p>
+              <p>
+                <strong>Total:</strong> ${reservaFinal.precioServicio}
+              </p>
+            </div>
 
-    {/* PAGO EN TIENDA */}
-    <button
-      className="confirm-btn-outline mt-3"
-      onClick={async () => {
-        await axios.post(
-          `${API}/api/Reservas/${reservaFinal.id}/confirmar-pago-tienda`
-        );
-        setMostrarResumen(true);
-      }}
-    >
-      Pagar en la tienda
-    </button>
-            {/* RESUMEN FINAL (lo que ya tenías) */}
-            {mostrarResumen && (
-              <>
-                <h3 className="confirm-title">¡Reserva confirmada!</h3>
-
-                <div className="confirm-data">
-                  <p>
-                    <strong>Cliente:</strong> {form.nombre}
-                  </p>
-                  <p>
-                    <strong>Servicio:</strong> {reservaFinal.nombreServicio}
-                  </p>
-                  <p>
-                    <strong>Barbero:</strong> {reservaFinal.nombreBarbero}
-                  </p>
-                  <p>
-                    <strong>Fecha:</strong> {reservaFinal.fecha.split("T")[0]}
-                  </p>
-                  <p>
-                    <strong>Hora:</strong> {reservaFinal.horaInicio}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ${reservaFinal.precioServicio}
-                  </p>
-                </div>
-
-                <div className="confirm-btn-row">
-                  <button
-                    className="confirm-btn-outline"
-                    onClick={() => {
-                      setMostrarResumen(false);
-                      setStep(1);
-                    }}
-                  >
-                    Hacer otra reserva
-                  </button>
-
-                  <button
-                    className="confirm-btn-outline"
-                    onClick={() => (window.location.href = "/misreservas")}
-                  >
-                    Ver mis reservas
-                  </button>
-                </div>
-              </>
+            {/* BOTÓN INICIAL */}
+            {!preferenceId && (
+              <button className="confirm-btn" onClick={pagarReserva}>
+                Pagar reserva
+              </button>
             )}
+
+            {/* WALLET DE MERCADO PAGO */}
+            {preferenceId && (
+              <div style={{ marginTop: "20px", width: "300px" }}>
+                <Wallet initialization={{ preferenceId }} />
+              </div>
+            )}
+
+            <div className="confirm-btn-row">
+              <button
+                className="confirm-btn-outline"
+                onClick={() => setStep(1)}
+              >
+                Hacer otra reserva
+              </button>
+
+              <button
+                className="confirm-btn-outline"
+                onClick={() => (window.location.href = "/misreservas")}
+              >
+                Ver mis reservas
+              </button>
+            </div>
           </div>
         )}
       </div>
