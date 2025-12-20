@@ -6,6 +6,7 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import "../src/styles/DatePickerDark.css";
 import "../src/styles/Reservation.css";
+import { Wallet } from "@mercadopago/sdk-react";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -25,7 +26,7 @@ const Reservation = () => {
   const [requiereOTP, setRequiereOTP] = useState(false);
   const [codigoOTP, setCodigoOTP] = useState("");
   const [tokenReserva, setTokenReserva] = useState(null);
-
+  const [preferenceId, setPreferenceId] = useState(null);
   const [reservaFinal, setReservaFinal] = useState(null);
 
   const [form, setForm] = useState({
@@ -94,37 +95,33 @@ const Reservation = () => {
     }
   };
   const pagarReserva = async () => {
-  if (!reservaFinal) return;
+    if (!reservaFinal) return;
 
-  try {
-    const response = await fetch(`${API}/api/pagos/crear-test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        reservaId: reservaFinal.id,
-        monto: reservaFinal.precioServicio,
-      }),
-    });
+    try {
+      const response = await fetch(`${API}/api/pagos/crear-test`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reservaId: reservaFinal.id,
+          monto: reservaFinal.precioServicio,
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Error al iniciar el pago");
+      if (!response.ok) {
+        throw new Error("Error al crear la preferencia");
+      }
+
+      const data = await response.json();
+
+      // ⬇️ ACA guardamos el preferenceId
+      setPreferenceId(data.preferenceId);
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo iniciar el pago");
     }
-
-    const data = await response.json();
-
-    if (!data.sandboxInitPoint) {
-      throw new Error("No se recibió la URL de pago");
-    }
-
-    window.location.href = data.sandboxInitPoint;
-  } catch (err) {
-    console.error(err);
-    alert("No se pudo iniciar el pago. Intente nuevamente.");
-  }
-};
-
+  };
 
   return (
     <section className="reservation-wrapper">
@@ -370,10 +367,30 @@ const Reservation = () => {
               <p>
                 <strong>Hora:</strong> {reservaFinal.horaInicio}
               </p>
+              <p>
+                <strong>Total:</strong> ${reservaFinal.precioServicio}
+              </p>
             </div>
 
+            {/* BOTÓN INICIAL */}
+            {!preferenceId && (
+              <button className="confirm-btn" onClick={pagarReserva}>
+                Pagar reserva
+              </button>
+            )}
+
+            {/* WALLET DE MERCADO PAGO */}
+            {preferenceId && (
+              <div style={{ marginTop: "20px", width: "300px" }}>
+                <Wallet initialization={{ preferenceId }} />
+              </div>
+            )}
+
             <div className="confirm-btn-row">
-              <button className="confirm-btn" onClick={() => setStep(1)}>
+              <button
+                className="confirm-btn-outline"
+                onClick={() => setStep(1)}
+              >
                 Hacer otra reserva
               </button>
 
@@ -384,8 +401,6 @@ const Reservation = () => {
                 Ver mis reservas
               </button>
             </div>
-
-            <button onClick={pagarReserva}>Pagar reserva</button>
           </div>
         )}
       </div>

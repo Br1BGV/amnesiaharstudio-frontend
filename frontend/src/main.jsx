@@ -5,7 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ScrollToTop from "../components/ScrollToTop.jsx";
+import { initMercadoPago } from "@mercadopago/sdk-react";
 
+initMercadoPago(import.meta.env.VITE_MP_PUBLIC_KEY);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <GoogleOAuthProvider clientId="711566136473-5kcm74ai1lnc0dmdqthpcf9rd8uq3e56.apps.googleusercontent.com">
     <BrowserRouter>
@@ -13,4 +15,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <App />
     </BrowserRouter>
   </GoogleOAuthProvider>
+  
 );
