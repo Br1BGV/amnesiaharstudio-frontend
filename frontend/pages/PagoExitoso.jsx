@@ -25,7 +25,7 @@ const PagoExitoso = () => {
 
     const interval = setInterval(async () => {
       try {
-        const res = await axios.get(`${API}/api/Reservas/${reservaId}`);
+        const res = await axios.get(`${API}/api/Reservas/estado-reserva/${reservaId}`);
         setReserva(res.data);
 
         if (res.data.pagada) {
