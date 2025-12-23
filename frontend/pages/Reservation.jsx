@@ -18,7 +18,7 @@ const Reservation = () => {
   const clienteId = isLogged ? user.id : null;
 
   const [step, setStep] = useState(1);
-const [mostrarResumen, setMostrarResumen] = useState(false);
+  const [mostrarResumen, setMostrarResumen] = useState(false);
   const [servicios, setServicios] = useState([]);
   const [barberos, setBarberos] = useState([]);
   const [diasDisponibles, setDiasDisponibles] = useState([]);
@@ -28,6 +28,8 @@ const [mostrarResumen, setMostrarResumen] = useState(false);
   const [tokenReserva, setTokenReserva] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
   const [reservaFinal, setReservaFinal] = useState(null);
+  const [metodoPago, setMetodoPago] = useState(""); // "mp" | "tienda"
+  const [confirmoMetodoPago, setConfirmoMetodoPago] = useState(false);
 
   const [form, setForm] = useState({
     nombre: isLogged ? user.nombre : "",
@@ -95,10 +97,10 @@ const [mostrarResumen, setMostrarResumen] = useState(false);
     }
   };
   useEffect(() => {
-  if (step === 4 && reservaFinal && !preferenceId) {
-    pagarReserva();
-  }
-}, [step, reservaFinal]);
+    if (step === 4 && reservaFinal && !preferenceId) {
+      pagarReserva();
+    }
+  }, [step, reservaFinal]);
   const pagarReserva = async () => {
     if (!reservaFinal) return;
 
@@ -348,80 +350,123 @@ const [mostrarResumen, setMostrarResumen] = useState(false);
             </div>
           </>
         )}
-
         {/* ================= PASO 4 ================= */}
-        {/* ================= PASO 4 ================= */}
-      {step === 4 && reservaFinal && (
-  <div className="confirm-box">
-    <div className="confirm-icon">✔️</div>
-    <h3 className="confirm-title">Reserva creada correctamente</h3>
-    <p>¿Cómo querés pagar?</p>
+        {step === 4 && reservaFinal && (
+          <div className="confirm-box">
+            <div className="confirm-icon">✔️</div>
+            <h3 className="confirm-title">Reserva creada correctamente</h3>
 
-    {/* WALLET APARECE DIRECTO */}
-    {preferenceId && (
-      <div style={{ marginTop: "20px", width: "300px" }}>
-        <Wallet initialization={{ preferenceId }} />
-      </div>
-    )}
-
-    {/* PAGO EN TIENDA */}
-    <button
-      className="confirm-btn-outline mt-3"
-      onClick={async () => {
-        await axios.post(
-          `${API}/api/Reservas/${reservaFinal.id}/confirmar-pago-tienda`
-        );
-        setMostrarResumen(true);
-      }}
-    >
-      Pagar en la tienda
-    </button>
-            {/* RESUMEN FINAL (lo que ya tenías) */}
-            {mostrarResumen && (
+            {/* SELECCIÓN DE MÉTODO */}
+            {!confirmoMetodoPago && (
               <>
-                <h3 className="confirm-title">¡Reserva confirmada!</h3>
+                <p>¿Cómo querés pagar?</p>
 
-                <div className="confirm-data">
-                  <p>
-                    <strong>Cliente:</strong> {form.nombre}
-                  </p>
-                  <p>
-                    <strong>Servicio:</strong> {reservaFinal.nombreServicio}
-                  </p>
-                  <p>
-                    <strong>Barbero:</strong> {reservaFinal.nombreBarbero}
-                  </p>
-                  <p>
-                    <strong>Fecha:</strong> {reservaFinal.fecha.split("T")[0]}
-                  </p>
-                  <p>
-                    <strong>Hora:</strong> {reservaFinal.horaInicio}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ${reservaFinal.precioServicio}
-                  </p>
+                <div style={{ textAlign: "left", marginTop: "10px" }}>
+                  <label>
+                    <input
+                      type="radio"
+                      name="pago"
+                      value="mp"
+                      checked={metodoPago === "mp"}
+                      onChange={() => setMetodoPago("mp")}
+                    />
+                    &nbsp; Ahora (Mercado Pago)
+                  </label>
+                  <br />
+                  <label>
+                    <input
+                      type="radio"
+                      name="pago"
+                      value="tienda"
+                      checked={metodoPago === "tienda"}
+                      onChange={() => setMetodoPago("tienda")}
+                    />
+                    &nbsp; En la tienda
+                  </label>
                 </div>
 
-                <div className="confirm-btn-row">
-                  <button
-                    className="confirm-btn-outline"
-                    onClick={() => {
-                      setMostrarResumen(false);
-                      setStep(1);
-                    }}
-                  >
-                    Hacer otra reserva
-                  </button>
+                <button
+                  className="confirm-btn mt-3"
+                  disabled={!metodoPago}
+                  onClick={async () => {
+                    if (metodoPago === "tienda") {
+                      await axios.post(
+                        `${API}/api/Reservas/${reservaFinal.id}/confirmar-pago-tienda`
+                      );
+                      setMostrarResumen(true);
+                    }
 
-                  <button
-                    className="confirm-btn-outline"
-                    onClick={() => (window.location.href = "/misreservas")}
-                  >
-                    Ver mis reservas
-                  </button>
-                </div>
+                    setConfirmoMetodoPago(true);
+                  }}
+                >
+                  Continuar
+                </button>
               </>
             )}
+
+            {/* MERCADO PAGO */}
+            {confirmoMetodoPago && metodoPago === "mp" && preferenceId && (
+              <div
+                style={{
+                  marginTop: "20px",
+                  maxWidth: "320px",
+                  marginInline: "auto",
+                }}
+              >
+                <Wallet initialization={{ preferenceId }} />
+              </div>
+            )}
+
+            {/* RESUMEN FINAL */}
+            {confirmoMetodoPago &&
+              metodoPago === "tienda" &&
+              mostrarResumen && (
+                <>
+                  <h3 className="confirm-title">¡Reserva confirmada!</h3>
+
+                  <div className="confirm-data">
+                    <p>
+                      <strong>Cliente:</strong> {form.nombre}
+                    </p>
+                    <p>
+                      <strong>Servicio:</strong> {reservaFinal.nombreServicio}
+                    </p>
+                    <p>
+                      <strong>Barbero:</strong> {reservaFinal.nombreBarbero}
+                    </p>
+                    <p>
+                      <strong>Fecha:</strong> {reservaFinal.fecha.split("T")[0]}
+                    </p>
+                    <p>
+                      <strong>Hora:</strong> {reservaFinal.horaInicio}
+                    </p>
+                    <p>
+                      <strong>Total:</strong> ${reservaFinal.precioServicio}
+                    </p>
+                  </div>
+
+                  <div className="confirm-btn-row">
+                    <button
+                      className="confirm-btn-outline"
+                      onClick={() => {
+                        setMetodoPago("");
+                        setConfirmoMetodoPago(false);
+                        setMostrarResumen(false);
+                        setStep(1);
+                      }}
+                    >
+                      Hacer otra reserva
+                    </button>
+
+                    <button
+                      className="confirm-btn-outline"
+                      onClick={() => (window.location.href = "/misreservas")}
+                    >
+                      Ver mis reservas
+                    </button>
+                  </div>
+                </>
+              )}
           </div>
         )}
       </div>
